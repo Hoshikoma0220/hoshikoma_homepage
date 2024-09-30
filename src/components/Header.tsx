@@ -1,30 +1,73 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Next.jsのImageコンポーネントをインポート
+import Image from 'next/image';
 
 const Header = () => (
-  <header style={{ padding: '20px', backgroundColor: '#333', color: '#fff' }}>
-    <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      {/* ロゴ画像をホームへのリンクにする */}
-      <Link href="/">
-        {/* name_logo.pngを表示 */}
-        <Image
-          src="/images/name_logo.png"
-          alt="サイト名ロゴ"
-          width={150} // ロゴ画像の幅
-          height={50} // ロゴ画像の高さ
-          style={{ cursor: 'pointer' }} // クリックできるようにポインタ表示に
-        />
-      </Link>
-      <ul style={{ display: 'flex', listStyle: 'none', justifyContent: 'space-around', width: '80%' }}>
-        <li><Link href="/">ホーム</Link></li>
-        <li><Link href="/profile">プロフィール</Link></li>
-        <li><Link href="/news">お知らせ</Link></li>
-        <li><Link href="/guideline">ガイドライン</Link></li>
-        <li><Link href="/sns">SNS</Link></li>
-        <li><Link href="/portfolio">ポートフォリオ</Link></li>
-        <li><Link href="/business">事業</Link></li>
-        <li><Link href="/contact">問い合わせ</Link></li>
+  <header className="py-4">
+    <nav className="container mx-auto flex justify-between items-center">
+      {/* ロゴ画像部分の背景をなくす */}
+      <div className="px-4 py-2">
+        <Link href="/">
+          <Image
+            src="/images/name_logo.png"
+            alt="サイト名ロゴ"
+            width={150}
+            height={50}
+            className="cursor-pointer"
+          />
+        </Link>
+      </div>
+
+      {/* ナビゲーション部分 */}
+      <ul className="flex space-x-8 text-lg">
+        <li className="relative group">
+          <Link href="/" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">ホーム</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Home</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/profile" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">プロフィール</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Profile</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/news" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">お知らせ</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">News</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/guideline" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">ガイドライン</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Guideline</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/sns" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">SNS</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">SNS</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/portfolio" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">ポートフォリオ</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Portfolio</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/business" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">事業</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Business</span>
+          </Link>
+        </li>
+        <li className="relative group">
+          <Link href="/contact" className="block">
+            <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">問い合わせ</span>
+            <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">Contact</span>
+          </Link>
+        </li>
       </ul>
     </nav>
   </header>
