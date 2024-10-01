@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 const Hero = () => {
   // 画像リスト
@@ -35,38 +34,42 @@ const Hero = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-transparent">
-      {/* ロゴを左半分の中央に大きく配置 */}
+      {/* ロゴを左半分の中央に配置し、右端を中央線に合わせる */}
       <div
-        className={`absolute z-20 w-1/2 h-full flex justify-center items-center transition-transform duration-1000 ease-in-out ${
-          isLogoLoaded ? 'transform-none opacity-100' : 'transform -translate-x-10 opacity-0'
+        className={`absolute z-20 w-1/2 h-full flex justify-end items-center transition-opacity duration-1000 ease-in-out ${
+          isLogoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
+        style={{ transform: 'translateY(-200px)' }} // 上に200pxシフト
       >
-        <Image
+        <img
           src="/images/name_logo.png" // ロゴ画像のパス
           alt="名前ロゴ"
-          width={450} // ロゴを大きく表示
-          height={450}
-          objectFit="contain"
-          onLoadingComplete={handleLogoLoad}
+          width={500} // ロゴを大きく表示
+          height={500}
+          onLoad={handleLogoLoad}
+          style={{
+            objectFit: 'contain',
+            transform: 'translateX(0%)' // 右端を中央線に合わせる
+          }}
         />
       </div>
 
       {/* 右半分の中央にランダム画像を大きく表示 */}
-      <div
-        className={`absolute z-10 w-1/2 h-full right-0 flex justify-center items-center transition-transform duration-1000 ease-in-out ${
-          isImageLoaded ? 'transform-none opacity-100' : 'transform translate-x-10 opacity-0'
-        }`}
-        style={{ overflow: 'visible' }} // 上限をなくすためにoverflow: visible
-      >
-        {/* 画像サイズを固定して大きく表示 */}
-        <Image
+      <div className="absolute top-0 right-0 w-1/2 h-full flex justify-center items-start overflow-hidden">
+        <img
           src={selectedImage}
           alt="ランダム画像"
-          width={1500} // 幅を手動で設定
-          height={1500} // 高さも手動で設定
-          objectFit="contain"
-          quality={100}
-          onLoadingComplete={handleImageLoad}
+          onLoad={handleImageLoad}
+          className={`transition-opacity duration-1000 ease-in-out ${
+            isImageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            width: 'auto', // 幅は自動調整
+            height: '180%', // 高さを180%に設定（少し縮小）
+            objectFit: 'cover', // アスペクト比を維持しつつカバー
+            objectPosition: 'center', // 左右の中央に配置
+            transform: 'translateY(-25px)', // 上に寄せる
+          }}
         />
       </div>
     </div>

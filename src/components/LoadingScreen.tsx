@@ -13,32 +13,29 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, loadingProgre
   // 読み込み進行が100%に達した時の処理
   useEffect(() => {
     if (loadingProgress >= 100) {
-      // カラー化が完了した後、しっかり1秒待機
       setColorComplete(true);
       setTimeout(() => {
         setIsComplete(true);  // フェードアウトを開始
-        setTimeout(() => onComplete(), 1500);  // フェードアウト完了後にページ遷移
-      }, 1500);  // カラー化完了後に1.5秒待機してからフェードアウト
+        setTimeout(() => onComplete(), 1000);  // フェードアウト完了後にページ遷移
+      }, 1000);  // カラー化完了後に1秒待機してからフェードアウト
     }
   }, [loadingProgress, onComplete]);
 
   return (
     <div
-      className={`flex flex-col justify-center items-center h-screen bg-white transition-opacity duration-1000 ${
+      className={`flex flex-col justify-center items-center h-screen transition-opacity duration-1000 ${
         isComplete ? 'opacity-0' : 'opacity-100'
       }`}
       style={{
-        transition: 'opacity 1.5s ease-in-out', // フェードアウトのスムーズさを調整
+        backgroundColor: 'var(--background-color)', // 背景色をCSS変数に依存
+        transition: 'opacity 1s ease-in-out', // フェードアウトのスムーズさを調整
       }}
     >
       {/* モノクロのロゴを常に背景として表示 */}
       <div
-        className={`relative w-[500px] h-[250px] transition-transform duration-1000 ease-out ${
-          isComplete ? 'opacity-0 transform scale-90' : ''
+        className={`relative w-[500px] h-[250px] transition-opacity duration-1000 ease-out ${
+          isComplete ? 'opacity-0' : 'opacity-100'
         }`}
-        style={{
-          transition: 'opacity 1.5s ease, transform 1.5s ease', // フェードアウトとスケールのスムーズさを強化
-        }}
       >
         {/* モノクロのロゴ画像 */}
         <Image

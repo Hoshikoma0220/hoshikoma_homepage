@@ -49,7 +49,7 @@ const HomePage = () => {
       {isLoading ? (
         <LoadingScreen loadingProgress={loadingProgress} onComplete={handleLoadingComplete} />
       ) : (
-        <div className="animate-fadeIn">
+        <div className="animate-openCurtain" style={{ background: 'var(--background-gradient)' }}>
           <div className="sticky top-0 z-50">
             <Header />
           </div>

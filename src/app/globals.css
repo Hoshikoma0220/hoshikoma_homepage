@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 基本の色設定 */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gradient-light: linear-gradient(to right, #e0f2f1, #b2ebf2); /* 彩度を落としたライトモードのグラデーション */
+  --gradient-dark: linear-gradient(to right, #0d47a1, #1e88e5);  /* ダークモードのグラデーション */
 }
 
+/* ダークモード対応 */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -14,14 +18,64 @@
   }
 }
 
+/* Body全体の色設定とグラデーションの適用 */
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  background: var(--gradient-light); /* 初期状態ではライトモードのグラデーション */
 }
 
+/* ダークモード・ライトモードでの背景グラデーション */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: var(--gradient-dark); /* ダークモードのグラデーション */
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: var(--gradient-light); /* 彩度を落としたライトモードのグラデーション */
+  }
+}
+
+/* テキストラッピングをバランスさせるためのユーティリティ */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* 読み込み完了後のズームフェードアウトアニメーション */
+@keyframes zoomFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2); /* 少し拡大してフェードアウト */
+  }
+}
+
+/* ページの下からスライドインするアニメーション */
+@keyframes slideIn {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 読み込み画面終了後に適用されるクラス */
+.loading-exit {
+  animation: zoomFadeOut 1s forwards ease-in-out; /* ズームしながらフェードアウト */
+}
+
+/* ページ読み込み時にスライドインするクラス */
+.page-enter {
+  animation: slideIn 0.8s forwards ease-in-out;  /* ページが下からスライドイン */
 }
