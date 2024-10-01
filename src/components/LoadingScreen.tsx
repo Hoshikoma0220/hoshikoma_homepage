@@ -8,21 +8,38 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, loadingProgress }) => {
   const [isComplete, setIsComplete] = useState(false);  // 読み込みが完了したかどうか
+  const [colorComplete, setColorComplete] = useState(false); // カラー化が完了したかどうか
 
-  // 読み込み完了後の処理
+  // 読み込み進行が100%に達した時の処理
   useEffect(() => {
     if (loadingProgress >= 100) {
+      // カラー化が完了した後、しっかり1秒待機
+      setColorComplete(true);
       setTimeout(() => {
-        setIsComplete(true);  // 読み込みが終わったら完了状態に
-        setTimeout(() => onComplete(), 1000);  // 1秒後にページ遷移を実行
-      }, 500);  // 完了後に少し遅延を入れる
+        setIsComplete(true);  // フェードアウトを開始
+        setTimeout(() => onComplete(), 1500);  // フェードアウト完了後にページ遷移
+      }, 1500);  // カラー化完了後に1.5秒待機してからフェードアウト
     }
   }, [loadingProgress, onComplete]);
 
   return (
-    <div className={`flex flex-col justify-center items-center h-screen bg-white transition-opacity duration-1000 ${isComplete ? 'opacity-0' : 'opacity-100'}`}>
+    <div
+      className={`flex flex-col justify-center items-center h-screen bg-white transition-opacity duration-1000 ${
+        isComplete ? 'opacity-0' : 'opacity-100'
+      }`}
+      style={{
+        transition: 'opacity 1.5s ease-in-out', // フェードアウトのスムーズさを調整
+      }}
+    >
       {/* モノクロのロゴを常に背景として表示 */}
-      <div className="relative w-[500px] h-[250px]">
+      <div
+        className={`relative w-[500px] h-[250px] transition-transform duration-1000 ease-out ${
+          isComplete ? 'opacity-0 transform scale-90' : ''
+        }`}
+        style={{
+          transition: 'opacity 1.5s ease, transform 1.5s ease', // フェードアウトとスケールのスムーズさを強化
+        }}
+      >
         {/* モノクロのロゴ画像 */}
         <Image
           src="/images/name_logo_mono.png"  // モノクロ版のロゴ
@@ -30,7 +47,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, loadingProgre
           layout="fill"
           objectFit="contain"
         />
-        
+
         {/* カラーのロゴを上に重ねる */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
           <Image
@@ -38,7 +55,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, loadingProgre
             alt="カラーのロゴ"
             layout="fill"
             objectFit="contain"
-            className="transition-all duration-500 ease-in-out"
+            className="transition-all duration-1000 ease-in-out"
             style={{
               clipPath: `inset(0 ${100 - loadingProgress}% 0 0)`,  // 左から右にカラーが進む
             }}

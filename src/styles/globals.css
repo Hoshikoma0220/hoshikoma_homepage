@@ -28,6 +28,27 @@
   }
 }
 
+/* ヘッダーとフッター用のフェードインアニメーション */
 .animate-fadeIn {
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1s ease-in-out; /* 1秒かけてフェードイン */
+}
+
+/* フッターのアニメーションはもう少し遅くする */
+.animate-fadeIn-footer {
+  animation: fadeIn 1.5s ease-in-out; /* フッター用に1.5秒のフェードイン */
+}
+
+/* Hero用のフェードインアニメーション (2秒) */
+.animate-fadeIn-hero {
+  animation: fadeIn 2s ease-in-out; /* Heroセクション用の2秒フェードイン */
+}
+
+/* Hero画像用のフェードインアニメーション (少し遅く) */
+.hero-image {
+  opacity: 0;
+  transition: opacity 2s ease-in-out; /* 画像用のフェードイン */
+}
+
+.hero-image-loaded {
+  opacity: 1; /* 読み込みが完了したら表示 */
 }
