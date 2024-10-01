@@ -3,50 +3,47 @@ import Image from 'next/image';
 
 interface LoadingScreenProps {
   onComplete: () => void;  // 読み込み完了時に呼び出す関数
+  loadingProgress: number; // 実際の読み込み進行度 (0~100%)
 }
 
-const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);  // 読み込みの進捗度（0~100）
+const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, loadingProgress }) => {
   const [isComplete, setIsComplete] = useState(false);  // 読み込みが完了したかどうか
 
-  // 読み込み進行をシミュレーション
+  // 読み込み完了後の処理
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsComplete(true), 500); // 読み込み完了後に0.5秒の遅延を入れる
-          return 100;
-        }
-        return prevProgress + 5;  // 5%ずつ増やしていく
-      });
-    }, 200);  // 200msごとに進行
-    return () => clearInterval(interval);  // コンポーネントがアンマウントされるときにクリア
-  }, []);
-
-  // 読み込み完了時にページ遷移や他の処理を実行
-  useEffect(() => {
-    if (isComplete) {
+    if (loadingProgress >= 100) {
       setTimeout(() => {
-        onComplete();  // 1秒後に読み込みが完了したときに次の処理を行う
-      }, 1000);  // 1秒後に完了を通知
+        setIsComplete(true);  // 読み込みが終わったら完了状態に
+        setTimeout(() => onComplete(), 1000);  // 1秒後にページ遷移を実行
+      }, 500);  // 完了後に少し遅延を入れる
     }
-  }, [isComplete, onComplete]);
+  }, [loadingProgress, onComplete]);
 
   return (
     <div className={`flex flex-col justify-center items-center h-screen bg-white transition-opacity duration-1000 ${isComplete ? 'opacity-0' : 'opacity-100'}`}>
-      {/* ロゴを大きく表示し、モノクロからカラーへ */}
-      <div className="relative w-[300px] h-[150px]">
+      {/* モノクロのロゴを常に背景として表示 */}
+      <div className="relative w-[500px] h-[250px]">
+        {/* モノクロのロゴ画像 */}
         <Image
-          src="/images/name_logo.png"  // ロゴ画像
-          alt="ロゴ"
+          src="/images/name_logo_mono.png"  // モノクロ版のロゴ
+          alt="モノクロロゴ"
           layout="fill"
           objectFit="contain"
-          className="transition-all duration-500 ease-in-out"
-          style={{
-            filter: `grayscale(${100 - progress}%)`,  // 進行に応じてモノクロ→カラーに変わる
-          }}
         />
+        
+        {/* カラーのロゴを上に重ねる */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <Image
+            src="/images/name_logo.png"  // カラーのロゴ
+            alt="カラーのロゴ"
+            layout="fill"
+            objectFit="contain"
+            className="transition-all duration-500 ease-in-out"
+            style={{
+              clipPath: `inset(0 ${100 - loadingProgress}% 0 0)`,  // 左から右にカラーが進む
+            }}
+          />
+        </div>
       </div>
     </div>
   );
