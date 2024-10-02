@@ -4,18 +4,34 @@ import Image from 'next/image';
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   // ページロード後にアニメーションを開始
   useEffect(() => {
     setTimeout(() => {
       setIsVisible(true);  // 0.5秒後にヘッダーを表示する
     }, 500);
+
+    // スクロール時の背景色変更処理
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setHasScrolled(true);
+      } else {
+        setHasScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
-    <header className={`py-4 transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <header className={`py-4 fixed w-full top-0 left-0 z-50 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'} ${hasScrolled ? 'bg-white shadow-lg dark:bg-gray-800' : 'bg-transparent'}`}>
       <nav className="container mx-auto flex justify-between items-center">
-        {/* ロゴ画像部分の背景をなくす */}
+        {/* ロゴ画像部分 */}
         <div className="px-4 py-2">
           <Link href="/">
             <Image

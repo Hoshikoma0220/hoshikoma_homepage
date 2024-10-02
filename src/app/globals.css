@@ -8,6 +8,12 @@
   --foreground: #171717;
   --gradient-light: linear-gradient(to right, #e0f2f1, #b2ebf2); /* 彩度を落としたライトモードのグラデーション */
   --gradient-dark: linear-gradient(to right, #0d47a1, #1e88e5);  /* ダークモードのグラデーション */
+  --header-light: rgba(224, 242, 241, 0.9); /* ヘッダーのライトモード背景 */
+  --header-dark: rgba(13, 71, 161, 0.9);    /* ヘッダーのダークモード背景 */
+  --button-light: #29b6f6; /* ライトモードのボタン色 */
+  --button-dark: #0d47a1;  /* ダークモードのボタン色 */
+  --button-text-light: #ffffff; /* ライトモードのボタンテキスト色 */
+  --button-text-dark: #ffffff;  /* ダークモードのボタンテキスト色 */
 }
 
 /* ダークモード対応 */
@@ -15,6 +21,20 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --header-background: var(--header-dark);
+    --button-background: var(--button-dark);
+    --button-text-color: var(--button-text-dark);
+  }
+}
+
+/* ライトモード対応 */
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --header-background: var(--header-light);
+    --button-background: var(--button-light);
+    --button-text-color: var(--button-text-light);
   }
 }
 
@@ -26,24 +46,50 @@ body {
   background: var(--gradient-light); /* 初期状態ではライトモードのグラデーション */
 }
 
-/* ダークモード・ライトモードでの背景グラデーション */
 @media (prefers-color-scheme: dark) {
   body {
     background: var(--gradient-dark); /* ダークモードのグラデーション */
   }
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background: var(--gradient-light); /* 彩度を落としたライトモードのグラデーション */
-  }
+/* ヘッダーのスタイル設定（スクロール時も対応） */
+.header {
+  background-color: var(--header-background);
+  backdrop-filter: blur(10px); /* ヘッダーにぼかし効果を追加 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease;
 }
 
-/* テキストラッピングをバランスさせるためのユーティリティ */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* ニュースタブのスタイル */
+.news-tab {
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-tab:hover {
+  transform: translateY(-5px); /* ホバー時に少し浮く */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* 「すべてのお知らせを見る」ボタン */
+.news-button {
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.news-button:hover {
+  background-color: lighten(var(--button-background), 10%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 /* 読み込み完了後のズームフェードアウトアニメーション */
@@ -78,4 +124,21 @@ body {
 /* ページ読み込み時にスライドインするクラス */
 .page-enter {
   animation: slideIn 0.8s forwards ease-in-out;  /* ページが下からスライドイン */
+}
+
+/* スクロールによるHero2セクションのアニメーション */
+.hero2-section {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.hero2-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero2-section.hidden {
+  opacity: 0;
+  transform: translateY(50px);
 }
