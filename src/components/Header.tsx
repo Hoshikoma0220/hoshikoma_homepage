@@ -71,7 +71,7 @@ const Header = () => {
             </Link>
           </li>
           <li className="relative group">
-            <Link href="/sns" className="block">
+            <Link href="/pages/sns" className="block">
               <span className="japanese-text block group-hover:opacity-0 transition-opacity duration-300">SNS</span>
               <span className="english-text absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">SNS</span>
             </Link>
